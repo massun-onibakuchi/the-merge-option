@@ -5,8 +5,11 @@ import "solmate/tokens/ERC20.sol";
 import "solmate/utils/SafeTransferLib.sol";
 
 /// @title Ethereum The Merge Option Contract V1
-/// @author 0xbkauchi
+/// @author 0xbakuchi
 /// @notice
+/// bet on whether The Merge will happen in the specified future block number.
+//  Winners will receive a payout proportional to their balance of token.
+/// @dev
 /// According to EIP-4399,
 /// the EIP allow for smart contracts to determine whether the upgrade to the PoS has already happened.
 /// A value of the DIFFICULTY opcode greater than 2**64 indicates that the transaction is being executed in the PoS block.
@@ -24,9 +27,7 @@ contract Token is ERC20 {
     }
 }
 
-/// @notice
-/// bet on whether The Merge will happen in the specified future block number.
-//  Winners will receive a payout proportional to their balance of token.
+/// @author 0xbakuchi
 contract OptionV1 {
     uint256 public immutable pauseMintingBlockNumber;
     uint256 public immutable settlementBlockNumber;
