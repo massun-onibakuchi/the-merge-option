@@ -32,9 +32,9 @@ contract OptionV1 {
     uint256 public immutable settlementBlockNumber;
     uint256 public immutable chainId;
 
-    Token public mergeToken;
+    Token public immutable mergeToken;
 
-    Token public notMergeToken;
+    Token public immutable notMergeToken;
 
     Token public winToken;
 

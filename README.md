@@ -1,46 +1,11 @@
-# Forge Template
+# The Merge Option
 
-A template for quickly getting started with forge
+Option contract to bet on whether The Merge will happen within the specified future block number.
 
-## Getting Started
+[bakuchi's idea](https://twitter.com/0xbakuchi/status/1548565577899188224?s=20&t=gvbAaFbMDyPBq3i-BuwY-Q)
 
-```
-mkdir my-project
-cd my-project
-forge init --template https://github.com/FrankieIsLost/forge-template
-git submodule update --init --recursive  ## initialize submodule dependencies
-npm install ## install development dependencies
-forge build
-forge test
-```
+## Post-Merge, `DIFFICULTY` opcodes changes
 
-## Features
+> Additionally, changes proposed by [this EIP](https://eips.ethereum.org/EIPS/eip-4399) allow for smart contracts to determine whether the upgrade to the PoS has already happened. This can be done by analyzing the return value of the DIFFICULTY opcode. A value greater than 2\*\*64 indicates that the transaction is being executed in the PoS block.
 
-### Testing Utilities
-
-Includes a `Utilities.sol` contract with common testing methods (like creating users with an initial balance), as well as various other utility contracts.
-
-### Preinstalled dependencies
-
-`ds-test` for testing, `forge-std` for better cheatcode UX, and `solmate` for optimized contract implementations.  
-
-### Linting
-
-Pre-configured `solhint` and `prettier-plugin-solidity`. Can be run by
-
-```
-npm run solhint
-npm run prettier
-```
-
-### CI with Github Actions
-
-Automatically run linting and tests on pull requests.
-
-### Default Configuration
-
-Including `.gitignore`, `.vscode`, `remappings.txt`
-
-## Acknowledgement
-
-Inspired by great dapptools templates like https://github.com/gakonst/forge-template, https://github.com/gakonst/dapptools-template and https://github.com/transmissions11/dapptools-template
+> https://blog.ethereum.org/2021/11/29/how-the-merge-impacts-app-layer/
