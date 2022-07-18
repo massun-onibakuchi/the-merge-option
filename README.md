@@ -4,9 +4,11 @@ Option contract to bet on whether The Merge will happen within a specified futur
 
 [bakuchi's idea](https://twitter.com/0xbakuchi/status/1548565577899188224?s=20&t=gvbAaFbMDyPBq3i-BuwY-Q)
 
-1. Participants bet ETH on whether the merge will occur before the specified block height.
-
-2. After maturity, winners can redeem ETH in proportion to the wager.
+## How it works
+1. participants bet ETH on whether the merge will occur before the specified block height. they receives shares based on their wager.
+2. they trade those shares on DEX freely.
+3. the result of The Merge is judged on the contract based on EIP 4399. [details are here](#post-merge-difficulty-opcodes-changes)
+4. after maturity, winners can redeem ETH in proportion to the wager.
 
 ## Post-Merge, `DIFFICULTY` opcodes changes
 
