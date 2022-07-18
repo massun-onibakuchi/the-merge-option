@@ -1,8 +1,12 @@
 # The Merge Option
 
-Option contract to bet on whether The Merge will happen within the specified future block number.
+Option contract to bet on whether The Merge will happen within a specified future block number.
 
 [bakuchi's idea](https://twitter.com/0xbakuchi/status/1548565577899188224?s=20&t=gvbAaFbMDyPBq3i-BuwY-Q)
+
+1. Participants bet ETH on whether the merge will occur before the specified block height.
+
+2. After maturity, winners can redeem ETH in proportion to the wager.
 
 ## Post-Merge, `DIFFICULTY` opcodes changes
 

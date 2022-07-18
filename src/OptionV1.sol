@@ -15,15 +15,20 @@ import "solmate/utils/SafeTransferLib.sol";
 /// A value of the DIFFICULTY opcode greater than 2**64 indicates that the transaction is being executed in the PoS block.
 
 contract Token is ERC20 {
-    address immutable minter;
+    address internal immutable controller;
 
     constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol, 18) {
-        minter = msg.sender;
+        controller = msg.sender;
     }
 
     function mint(address to, uint256 amount) external {
-        require(msg.sender == minter, "!minter");
+        require(msg.sender == controller, "!minter");
         _mint(to, amount);
+    }
+
+    function burn(address to, uint256 amount) external {
+        require(msg.sender == controller, "!burner");
+        _burn(to, amount);
     }
 }
 
@@ -40,6 +45,8 @@ contract OptionV1 {
     Token public winToken;
 
     uint256 public totalDepositedEth;
+
+    uint256 public totalSupplyAtSettlementTime;
 
     constructor(uint256 _settlementBlockNumber, uint256 _pauseMintingBlockNumber) {
         settlementBlockNumber = _settlementBlockNumber;
@@ -66,8 +73,10 @@ contract OptionV1 {
         Token _winToken = winToken;
         require(address(_winToken) != address(0), "!settled");
 
-        uint256 payout = (totalDepositedEth * _winToken.balanceOf(msg.sender)) / _winToken.totalSupply();
+        uint256 bal = _winToken.balanceOf(msg.sender);
+        uint256 payout = (totalDepositedEth * bal) / totalSupplyAtSettlementTime;
 
+        _winToken.burn(msg.sender, bal);
         SafeTransferLib.safeTransferETH(msg.sender, payout);
     }
 
@@ -80,6 +89,9 @@ contract OptionV1 {
         // require(chainId == block.chainid, "chain-split");
 
         /// A value of the DIFFICULTY opcode greater than 2**64 indicates that the transaction is being executed in the PoS block.
-        winToken = block.difficulty > 2**64 ? mergeToken : notMergeToken;
+        Token _winToken = block.difficulty > 2**64 ? mergeToken : notMergeToken;
+
+        winToken = _winToken;
+        totalSupplyAtSettlementTime = _winToken.totalSupply();
     }
 }

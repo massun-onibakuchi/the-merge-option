@@ -25,7 +25,7 @@ contract TestOptionV1 is Test {
         assertEq(notMergeToken.totalSupply(), 0);
     }
 
-    function testMint() external {
+    function testOnlyMinter() external {
         vm.expectRevert(bytes("!minter"));
         mergeToken.mint(address(this), 0);
 
@@ -33,9 +33,18 @@ contract TestOptionV1 is Test {
         notMergeToken.mint(address(this), 0);
     }
 
+    function testOnlyBurner() external {
+        vm.expectRevert(bytes("!burner"));
+        mergeToken.burn(address(this), 0);
+
+        vm.expectRevert(bytes("!burner"));
+        notMergeToken.burn(address(this), 0);
+    }
+
     function testBetOnTheMerge() external {
         option.betOnTheMerge{value: 100}();
         assertEq(mergeToken.balanceOf(address(this)), 100);
+        assertEq(option.totalDepositedEth(), 100);
 
         vm.roll(block.number + 200);
 
@@ -46,6 +55,7 @@ contract TestOptionV1 is Test {
     function testBetOnTheNotMerge() external {
         option.betOnTheNotMerge{value: 100}();
         assertEq(notMergeToken.balanceOf(address(this)), 100);
+        assertEq(option.totalDepositedEth(), 100);
 
         vm.roll(block.number + 200);
 
@@ -64,10 +74,13 @@ contract TestOptionV1 is Test {
 
         vm.roll(block.number + 1501);
         option.settle(); // Merge doesn't happen
+        uint256 totalSupply = option.totalSupplyAtSettlementTime();
 
         uint256 bal = address(this).balance;
         option.redeem();
         assertEq(address(this).balance - bal, 1100);
+        assertEq(notMergeToken.balanceOf(address(this)), 0);
+        assertEq(option.totalSupplyAtSettlementTime(), totalSupply);
     }
 
     function testSettleValidation() external {
